@@ -7,6 +7,7 @@
         // Define default options
         this.defaultOptions = {
             autoplay: true,
+            repeat: true,
             playBtn: null,
             prevBtn: null,
             nextBtn: null,
@@ -33,10 +34,13 @@
         initAudio();
         this.loadAudio();
 
-        // Define events
+        // Define buttons events events
         playBtn.addEventListener('click', this.playAudio.bind(this));
         prevBtn.addEventListener('click', this.prevAudio.bind(this));
         nextBtn.addEventListener('click', this.nextAudio.bind(this));
+
+        // Define audio events events
+        this.audioTag.addEventListener('ended', endEvent);
 
         setInterval(function() {
             currentTimeBlock.innerHTML = _this.getCurrentTime();
@@ -62,6 +66,27 @@
             _this.audioTag.setAttribute('preload', 'auto');
             _this.audioTag.setAttribute('controls', 'controls');
             document.body.appendChild(_this.audioTag);
+        }
+
+        function endEvent() {
+            console.log(_this.indexAudio);
+            if(_this.indexAudio === _this.defaultOptions.length - 1) {
+                if(_this.defaultOptions.repeat) {
+                    _this.indexAudio = 0;
+                    _this.loadAudio();
+                    _this.playAudio();
+                }
+                else {
+                    _this.playAudio();
+                }
+            }
+            else {
+                console.log(_this.indexAudio);
+                _this.indexAudio++;
+                console.log(_this.indexAudio);
+                _this.loadAudio();
+                _this.playAudio();
+            }
         }
 
     };
