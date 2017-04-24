@@ -40,11 +40,8 @@
         nextBtn.addEventListener('click', this.nextAudio.bind(this));
 
         // Define audio events events
-        this.audioTag.addEventListener('ended', endEvent);
-
-        setInterval(function() {
-            currentTimeBlock.innerHTML = _this.getCurrentTime();
-        }, 1000);
+        this.audioTag.addEventListener('ended', endAudioEvent);
+        this.audioTag.addEventListener('timeupdate', timeUpdateEvent)
 
         if(this.defaultOptions.autoplay) {
             this.playAudio();
@@ -68,8 +65,7 @@
             document.body.appendChild(_this.audioTag);
         }
 
-        function endEvent() {
-            console.log(_this.indexAudio);
+        function endAudioEvent() {
             if(_this.indexAudio === _this.defaultOptions.length - 1) {
                 if(_this.defaultOptions.repeat) {
                     _this.indexAudio = 0;
@@ -81,12 +77,14 @@
                 }
             }
             else {
-                console.log(_this.indexAudio);
                 _this.indexAudio++;
-                console.log(_this.indexAudio);
                 _this.loadAudio();
                 _this.playAudio();
             }
+        }
+
+        function timeUpdateEvent() {
+            currentTimeBlock.innerHTML = _this.getCurrentTime();
         }
 
     };
